@@ -79,83 +79,91 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(36.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Image.asset(
-                'assets/tmed.png',
-                height: 48,
-                color: Colors.white,
-              ),
-              const Spacer(),
-              MaterialButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  color: purple,
-                  child: const Text("Konferensiya yaratish",
-                      style: TextStyle(fontSize: 16)),
-                  onPressed: () => {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SpeakerJoinScreen(
-                                    isCreateMeeting: true)))
-                      }),
-              const VerticalSpacer(32),
-              const Row(
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 500),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(36.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
-                      child: Divider(
-                    thickness: 1,
+                  const Spacer(),
+                  Image.asset(
+                    'assets/tmed.png',
+                    height: 48,
+                    color: Colors.white,
+                  ),
+                  const Spacer(),
+                  MaterialButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      color: purple,
+                      child: const Text("Konferensiya yaratish",
+                          style: TextStyle(fontSize: 16)),
+                      onPressed: () => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SpeakerJoinScreen(
+                                            isCreateMeeting: true)))
+                          }),
+                  const VerticalSpacer(32),
+                  const Row(
+                    children: [
+                      Expanded(
+                          child: Divider(
+                        thickness: 1,
+                        color: black750,
+                      )),
+                      HorizontalSpacer(),
+                      Text("OR"),
+                      HorizontalSpacer(),
+                      Expanded(
+                          child: Divider(
+                        thickness: 1,
+                        color: black750,
+                      )),
+                    ],
+                  ),
+                  const VerticalSpacer(32),
+                  // MaterialButton(
+                  //     shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(12)),
+                  //     padding: const EdgeInsets.symmetric(vertical: 16),
+                  //     color: black750,
+                  //     child: const Text("Konferensiyaga qo'shilish ",
+                  //         style: TextStyle(fontSize: 16)),
+                  //     onPressed: () => {
+                  //           Navigator.push(
+                  //               context,
+                  //               MaterialPageRoute(
+                  //                   builder: (context) => const SpeakerJoinScreen(
+                  //                       isCreateMeeting: false)))
+                  //         }),
+                  // const VerticalSpacer(12),
+                  MaterialButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     color: black750,
-                  )),
-                  HorizontalSpacer(),
-                  Text("OR"),
-                  HorizontalSpacer(),
-                  Expanded(
-                      child: Divider(
-                    thickness: 1,
-                    color: black750,
-                  )),
+                    child: const Text(
+                        "Jonli Konfrensiyaga qoshilish qo'shilish ",
+                        style: TextStyle(fontSize: 16)),
+                    onPressed: () => {
+                      context.goNamed(
+                        AppRoutePath.viewerJoinScreen,
+                        queryParameters: {"fid": "iughj"},
+                      ),
+                    },
+                  ),
+                  const Spacer(),
                 ],
               ),
-              const VerticalSpacer(32),
-              // MaterialButton(
-              //     shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(12)),
-              //     padding: const EdgeInsets.symmetric(vertical: 16),
-              //     color: black750,
-              //     child: const Text("Konferensiyaga qo'shilish ",
-              //         style: TextStyle(fontSize: 16)),
-              //     onPressed: () => {
-              //           Navigator.push(
-              //               context,
-              //               MaterialPageRoute(
-              //                   builder: (context) => const SpeakerJoinScreen(
-              //                       isCreateMeeting: false)))
-              //         }),
-              // const VerticalSpacer(12),
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                color: black750,
-                child: const Text("Jonli Konfrensiyaga qoshilish qo'shilish ",
-                    style: TextStyle(fontSize: 16)),
-                onPressed: () => {
-                  context.goNamed(
-                    AppRoutePath.viewerJoinScreen,
-                    queryParameters: {"fid": "iughj"},
-                  ),
-                },
-              ),
-              const Spacer(),
-            ],
+            ),
           ),
         ),
       ),
