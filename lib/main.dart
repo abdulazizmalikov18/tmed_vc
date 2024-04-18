@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tmed_vc/constants/app_router.dart';
 
 import 'constants/colors.dart';
-import 'navigator_key.dart';
-import 'screens/splash_screen.dart';
 
 void main() {
   // Run Flutter App
@@ -15,16 +14,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Material App
-    return MaterialApp(
-      title: 'VideoSDK Flutter Example',
+    return MaterialApp.router(
+      title: 'T-MED VC',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         appBarTheme: const AppBarTheme().copyWith(color: primaryColor),
         primaryColor: primaryColor,
         scaffoldBackgroundColor: secondaryColor,
       ),
-      home: const SplashScreen(),
-      navigatorKey: navigatorKey,
+      routerConfig: AppRouts.router,
     );
   }
 }

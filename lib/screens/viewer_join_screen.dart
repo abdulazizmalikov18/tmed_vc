@@ -9,7 +9,8 @@ import '../utils/toast.dart';
 
 // Join Screen
 class ViewerJoinScreen extends StatefulWidget {
-  const ViewerJoinScreen({super.key});
+  const ViewerJoinScreen({super.key, required this.id});
+  final String id;
 
   @override
   State<ViewerJoinScreen> createState() => _ViewerJoinScreenState();
@@ -22,6 +23,7 @@ class _ViewerJoinScreenState extends State<ViewerJoinScreen> {
   @override
   void initState() {
     super.initState();
+    meetingIdTextController.text = widget.id;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final token = await fetchToken(context);
       setState(() {
