@@ -133,27 +133,28 @@ class _ViewerJoinScreenState extends State<ViewerJoinScreen> {
     }
     String meetingId = meetingIdTextController.text;
     String name = nameTextController.text;
-    var validMeeting = await validateMeeting(_token, meetingId);
-    print("====>>>> $validMeeting");
-    if (context.mounted) {
-      if (validMeeting) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ILSScreen(
-              token: _token,
-              meetingId: meetingId,
-              displayName: name,
-              micEnabled: false,
-              camEnabled: false,
-              mode: Mode.VIEWER,
+    await validateMeeting(_token, meetingId).then((validMeeting) {
+      print("====>>>> $validMeeting");
+      if (context.mounted) {
+        if (validMeeting) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ILSScreen(
+                token: _token,
+                meetingId: meetingId,
+                displayName: name,
+                micEnabled: false,
+                camEnabled: false,
+                mode: Mode.VIEWER,
+              ),
             ),
-          ),
-        );
-      } else {
-        showSnackBarMessage(message: "Invalid Meeting ID", context: context);
+          );
+        } else {
+          showSnackBarMessage(message: "Invalid Meeting ID", context: context);
+        }
       }
-    }
+    });
   }
 
   @override

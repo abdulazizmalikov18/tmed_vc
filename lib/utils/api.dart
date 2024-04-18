@@ -8,7 +8,7 @@ Future<String> fetchToken(BuildContext context) async {
   return Future.delayed(
     const Duration(milliseconds: 100),
     () =>
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiJiNTJlYzI4YS03MmNhLTRkMWEtOTcyNS1iZTIyMWNhMGMwZTciLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTcxMzQzNjU2MywiZXhwIjoxNzQ0OTcyNTYzfQ.6z5nkKVqA9L6KFqyxSSq1Fkv6fR0OrrQnsXNUAS0Iwk",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiI1NGFlMzdkYS02NjBlLTQ5MzgtODJhNC04YjQxOTAzYjg2OTciLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTcxMTUyODM0NSwiZXhwIjoxNzQzMDY0MzQ1fQ.iPtbuHFifORgJ0NuIWCy4yZnFUkBbd3LMGMh2FH-o3I",
   );
 }
 

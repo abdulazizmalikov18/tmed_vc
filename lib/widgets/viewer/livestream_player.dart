@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -67,21 +69,18 @@ class LivestreamPlayerState extends State<LivestreamPlayer>
     if (_controller.value.isInitialized) {
       var oPosition = _controller.value.position;
       var oDuration = _controller.value.duration;
-      if (oPosition != null && oDuration != null) {
-        if (oDuration.inHours == 0) {
-          var strPosition = oPosition.toString().split('.')[0];
-          var strDuration = oDuration.toString().split('.')[0];
-          position =
-              "${strPosition.split(':')[1]}:${strPosition.split(':')[2]}";
-          duration =
-              "${strDuration.split(':')[1]}:${strDuration.split(':')[2]}";
-        } else {
-          position = oPosition.toString().split('.')[0];
-          duration = oDuration.toString().split('.')[0];
-        }
-        validPosition = oDuration.compareTo(oPosition) >= 0;
-        sliderValue = validPosition ? oPosition.inSeconds.toDouble() : 0;
+      if (oDuration.inHours == 0) {
+        var strPosition = oPosition.toString().split('.')[0];
+        var strDuration = oDuration.toString().split('.')[0];
+        position = "${strPosition.split(':')[1]}:${strPosition.split(':')[2]}";
+        duration = "${strDuration.split(':')[1]}:${strDuration.split(':')[2]}";
+      } else {
+        position = oPosition.toString().split('.')[0];
+        duration = oDuration.toString().split('.')[0];
       }
+      validPosition = oDuration.compareTo(oPosition) >= 0;
+      sliderValue = validPosition ? oPosition.inSeconds.toDouble() : 0;
+
       if (_controller.value.isEnded) {
         widget.onPlaybackEnded();
       }
@@ -209,8 +208,7 @@ class LivestreamPlayerState extends State<LivestreamPlayer>
                                 inactiveColor: Colors.white70,
                                 value: sliderValue,
                                 min: 0.0,
-                                max: (!validPosition &&
-                                        _controller.value.duration == null)
+                                max: (!validPosition)
                                     ? 1.0
                                     : _controller.value.duration.inSeconds
                                         .toDouble(),

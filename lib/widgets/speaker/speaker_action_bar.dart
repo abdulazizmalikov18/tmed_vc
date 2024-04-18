@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:touch_ripple_effect/touch_ripple_effect.dart';
@@ -142,12 +144,13 @@ class SpeakerActionBar extends StatelessWidget {
                   ),
                   const HorizontalSpacer(8),
                   GestureDetector(
-                      onTapDown: (details) =>
-                          {onSwitchCameraButtonPressed(details)},
-                      child: Icon(
-                        Icons.arrow_drop_down,
-                        color: isCamEnabled ? Colors.white : primaryColor,
-                      )),
+                    onTapDown: (details) =>
+                        {onSwitchCameraButtonPressed(details)},
+                    child: Icon(
+                      Icons.arrow_drop_down,
+                      color: isCamEnabled ? Colors.white : primaryColor,
+                    ),
+                  ),
                 ],
               ),
             ),

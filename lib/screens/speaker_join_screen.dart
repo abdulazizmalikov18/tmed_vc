@@ -109,13 +109,15 @@ class _SpeakerJoinScreenState extends State<SpeakerJoinScreen> {
                               onPressed: () => setState(
                                 () => isMicOn = !isMicOn,
                               ),
-                              child: Icon(isMicOn ? Icons.mic : Icons.mic_off,
-                                  color: isMicOn ? grey : Colors.white),
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: Colors.black,
                                 backgroundColor: isMicOn ? Colors.white : red,
                                 shape: const CircleBorder(),
                                 padding: const EdgeInsets.all(12),
+                              ),
+                              child: Icon(
+                                isMicOn ? Icons.mic : Icons.mic_off,
+                                color: isMicOn ? grey : Colors.white,
                               ),
                             ),
                             ElevatedButton(
@@ -278,28 +280,29 @@ class _SpeakerJoinScreenState extends State<SpeakerJoinScreen> {
     }
     String meetingId = meetingIdTextController.text;
     String name = nameTextController.text;
-    var validMeeting = await validateMeeting(_token, meetingId);
-    print("====>>>> 2 $validMeeting");
-    if (context.mounted) {
-      if (validMeeting) {
-        disposeCameraPreview();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ILSScreen(
-              token: _token,
-              meetingId: meetingId,
-              displayName: name,
-              micEnabled: isMicOn,
-              camEnabled: isCameraOn,
-              mode: Mode.CONFERENCE,
+    await validateMeeting(_token, meetingId).then((validMeeting) {
+      print("====>>>> 2 $validMeeting");
+      if (context.mounted) {
+        if (validMeeting) {
+          disposeCameraPreview();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ILSScreen(
+                token: _token,
+                meetingId: meetingId,
+                displayName: name,
+                micEnabled: isMicOn,
+                camEnabled: isCameraOn,
+                mode: Mode.CONFERENCE,
+              ),
             ),
-          ),
-        );
-      } else {
-        showSnackBarMessage(message: "Invalid Meeting ID", context: context);
+          );
+        } else {
+          showSnackBarMessage(message: "Invalid Meeting ID", context: context);
+        }
       }
-    }
+    });
   }
 
   @override

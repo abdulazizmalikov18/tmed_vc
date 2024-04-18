@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -188,6 +190,7 @@ class _ILSScreenState extends State<ILSScreen> {
         }
       }
     });
+    print(messages);
   }
 
   Future<bool> _onWillPopScope() async {

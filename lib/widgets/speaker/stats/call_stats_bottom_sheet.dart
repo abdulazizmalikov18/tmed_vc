@@ -21,8 +21,9 @@ class _CallStatsBottomSheetState extends State<CallStatsBottomSheet> {
 
   @override
   void initState() {
-    statsTimer =
-        Timer.periodic(const Duration(seconds: 1), (_) => {updateStats()});
+    statsTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      updateStats();
+    });
     super.initState();
     updateStats();
   }
@@ -105,8 +106,7 @@ class _CallStatsBottomSheetState extends State<CallStatsBottomSheet> {
                     child: Padding(
                       padding: const EdgeInsets.all(4),
                       child: Text(audioStats?['rtt'] != null
-                          ? (audioStats?['rtt'] as double).toInt().toString() +
-                              " ms"
+                          ? "${(audioStats?['rtt'] as double).toInt()} ms"
                           : "-"),
                     ),
                   ),
@@ -114,8 +114,7 @@ class _CallStatsBottomSheetState extends State<CallStatsBottomSheet> {
                       child: Padding(
                     padding: const EdgeInsets.all(4),
                     child: Text(videoStats?['rtt'] != null
-                        ? (videoStats?['rtt'] as double).toInt().toString() +
-                            " ms"
+                        ? "${(videoStats?['rtt'] as double).toInt()} ms"
                         : "-"),
                   ))
                 ]),
@@ -126,19 +125,13 @@ class _CallStatsBottomSheetState extends State<CallStatsBottomSheet> {
                       child: Padding(
                           padding: const EdgeInsets.all(4),
                           child: Text(audioStats?['jitter'] != null
-                              ? (audioStats?['jitter'])
-                                      .toString()
-                                      .split('.')[0] +
-                                  " ms"
+                              ? "${(audioStats?['jitter']).toString().split('.')[0]} ms"
                               : "-"))),
                   Center(
                       child: Padding(
                           padding: const EdgeInsets.all(4),
                           child: Text(videoStats?['jitter'] != null
-                              ? (videoStats?['jitter'])
-                                      .toString()
-                                      .split('.')[0] +
-                                  " ms"
+                              ? "${(videoStats?['jitter']).toString().split('.')[0]} ms"
                               : "-")))
                 ]),
                 TableRow(children: [
@@ -148,21 +141,13 @@ class _CallStatsBottomSheetState extends State<CallStatsBottomSheet> {
                       child: Padding(
                           padding: const EdgeInsets.all(4),
                           child: Text(audioStats?['packetsLost'] != null
-                              ? ((audioStats?['packetsLost'] ?? 0.0) /
-                                              (audioStats?['totalPackets'] ?? 1)
-                                          as double)
-                                      .toStringAsFixed(2) +
-                                  " %"
+                              ? "${((audioStats?['packetsLost'] ?? 0.0) / (audioStats?['totalPackets'] ?? 1) as double).toStringAsFixed(2)} %"
                               : "-"))),
                   Center(
                       child: Padding(
                           padding: const EdgeInsets.all(4),
                           child: Text(videoStats?['packetsLost'] != null
-                              ? ((videoStats?['packetsLost'] ?? 0.0) /
-                                              (videoStats?['totalPackets'] ?? 1)
-                                          as double)
-                                      .toStringAsFixed(2) +
-                                  " %"
+                              ? "${((videoStats?['packetsLost'] ?? 0.0) / (videoStats?['totalPackets'] ?? 1) as double).toStringAsFixed(2)} %"
                               : "-")))
                 ]),
                 TableRow(children: [
@@ -172,10 +157,7 @@ class _CallStatsBottomSheetState extends State<CallStatsBottomSheet> {
                       child: Padding(
                           padding: const EdgeInsets.all(4),
                           child: Text(audioStats?['bitrate'] != null
-                              ? (audioStats?['bitrate'])
-                                      .toString()
-                                      .split('.')[0] +
-                                  " kb/s"
+                              ? "${(audioStats?['bitrate']).toString().split('.')[0]} kb/s"
                               : "-"))),
                   Center(
                       child: Padding(
@@ -195,8 +177,7 @@ class _CallStatsBottomSheetState extends State<CallStatsBottomSheet> {
                       child: Padding(
                           padding: const EdgeInsets.all(4),
                           child: Text(videoStats?['size']?['framerate'] != null
-                              ? (videoStats?['size']?['framerate']).toString() +
-                                  ""
+                              ? "${videoStats?['size']?['framerate']}"
                               : "-")))
                 ]),
                 TableRow(children: [
@@ -211,9 +192,7 @@ class _CallStatsBottomSheetState extends State<CallStatsBottomSheet> {
                           child: Text(videoStats?['size']?['width'] != null &&
                                   videoStats?['size']?['height'] != null &&
                                   videoStats?['size']?['height'] != 'null'
-                              ? (videoStats?['size']?['width']).toString() +
-                                  "x" +
-                                  (videoStats?['size']?['height']).toString()
+                              ? "${videoStats?['size']?['width']}x${videoStats?['size']?['height']}"
                               : "-")))
                 ]),
                 TableRow(children: [
@@ -272,7 +251,7 @@ class _CallStatsBottomSheetState extends State<CallStatsBottomSheet> {
     }
     double jitter = stats['jitter'] ?? 0;
     double rtt = stats['rtt'] ?? 0;
-    double? _score = (stats.length) > 0 ? 100 : null;
+    double? _score = stats.isNotEmpty ? 100 : null;
     if (_score != null) {
       _score -= packetLossPercent * 50 > 50 ? 50 : packetLossPercent * 50;
       _score -= ((jitter / 30) * 25 > 25 ? 25 : (jitter / 30) * 25);

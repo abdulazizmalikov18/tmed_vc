@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         appBarTheme: const AppBarTheme().copyWith(color: primaryColor),
         primaryColor: primaryColor,
-        backgroundColor: secondaryColor,
+        scaffoldBackgroundColor: secondaryColor,
       ),
       home: const SplashScreen(),
       navigatorKey: navigatorKey,

@@ -22,7 +22,7 @@ class _CallStatsState extends State<CallStats> {
   @override
   void initState() {
     statsTimer =
-        Timer.periodic(const Duration(seconds: 1), (_) => {updateStats()});
+        Timer.periodic(const Duration(seconds: 1), (_) {updateStats();});
     super.initState();
     updateStats();
   }

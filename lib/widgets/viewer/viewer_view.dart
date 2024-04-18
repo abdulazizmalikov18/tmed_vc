@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tmed_vc/widgets/viewer/livestream_player_web.dart';
 import 'package:videosdk/videosdk.dart';
 import 'package:tmed_vc/constants/colors.dart';
 import 'package:tmed_vc/utils/api.dart';
@@ -11,6 +12,7 @@ import 'package:tmed_vc/widgets/common/chat/chat_view.dart';
 import 'package:tmed_vc/widgets/viewer/viewer_appbar.dart';
 import 'package:tmed_vc/widgets/viewer/livestream_player.dart';
 import 'package:tmed_vc/widgets/viewer/waiting_for_hls.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ViewerView extends StatefulWidget {
   final Room meeting;
@@ -38,9 +40,7 @@ class _ViewerViewState extends State<ViewerView> {
     super.initState();
     // Register meeting events
     hlsState = widget.meeting.hlsState;
-    if (widget.meeting.hlsUrls != null) {
-      playbackHlsUrl = widget.meeting.hlsUrls['playbackHlsUrl'];
-    }
+    playbackHlsUrl = widget.meeting.hlsUrls['playbackHlsUrl'];
     participants = widget.meeting.participants.length + 1;
 
     registerMeetingEvents(widget.meeting);
@@ -85,25 +85,47 @@ class _ViewerViewState extends State<ViewerView> {
                         hideOverlay();
                       }
                     },
-                    child: LivestreamPlayer(
-                      playbackHlsUrl: playbackHlsUrl!,
-                      orientation: orientation,
-                      showChat: showChat,
-                      showOverlay: showOverlay,
-                      onChatButtonClicked: () {
-                        setState(() {
-                          showChat = !showChat;
-                        });
-                      },
-                      onRaiseHandButtonClicked: () {
-                        widget.meeting.pubSub.publish("RAISE_HAND", "message");
-                      },
-                      onPlaybackEnded: () {
-                        setState(() {
-                          isEnded = true;
-                        });
-                      },
-                    ),
+                    child: kIsWeb
+                        ? LivestreamPlayerWeb(
+                            playbackHlsUrl: playbackHlsUrl!,
+                            orientation: orientation,
+                            showChat: showChat,
+                            showOverlay: showOverlay,
+                            onChatButtonClicked: () {
+                              setState(() {
+                                showChat = !showChat;
+                              });
+                            },
+                            onRaiseHandButtonClicked: () {
+                              widget.meeting.pubSub
+                                  .publish("RAISE_HAND", "message");
+                            },
+                            onPlaybackEnded: () {
+                              setState(() {
+                                isEnded = true;
+                              });
+                            },
+                          )
+                        : LivestreamPlayer(
+                            playbackHlsUrl: playbackHlsUrl!,
+                            orientation: orientation,
+                            showChat: showChat,
+                            showOverlay: showOverlay,
+                            onChatButtonClicked: () {
+                              setState(() {
+                                showChat = !showChat;
+                              });
+                            },
+                            onRaiseHandButtonClicked: () {
+                              widget.meeting.pubSub
+                                  .publish("RAISE_HAND", "message");
+                            },
+                            onPlaybackEnded: () {
+                              setState(() {
+                                isEnded = true;
+                              });
+                            },
+                          ),
                   ),
                 ),
               if (playbackHlsUrl != null &&
