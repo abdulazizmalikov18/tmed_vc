@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Material App
     return MaterialApp.router(
-      title: 'T-MED VC',
+      title: 'TMED VC',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         appBarTheme: const AppBarTheme().copyWith(color: primaryColor),

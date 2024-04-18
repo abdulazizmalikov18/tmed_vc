@@ -97,20 +97,20 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                   const Spacer(),
                   MaterialButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      color: purple,
-                      child: const Text("Konferensiya yaratish",
-                          style: TextStyle(fontSize: 16)),
-                      onPressed: () => {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SpeakerJoinScreen(
-                                            isCreateMeeting: true)))
-                          }),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    color: purple,
+                    child: const Text("Konferensiya yaratish",
+                        style: TextStyle(fontSize: 16)),
+                    onPressed: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SpeakerJoinScreen(
+                                  isCreateMeeting: true)))
+                    },
+                  ),
                   const VerticalSpacer(32),
                   const Row(
                     children: [
@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen>
                     onPressed: () => {
                       context.goNamed(
                         AppRoutePath.viewerJoinScreen,
-                        queryParameters: {"fid": "iughj"},
+                        queryParameters: {"fid": ""},
                       ),
                     },
                   ),

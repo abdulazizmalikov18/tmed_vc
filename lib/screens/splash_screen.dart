@@ -28,9 +28,12 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         children: [
           Center(
-            child: Image.asset(
-              'assets/tmed.png',
-              color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Image.asset(
+                'assets/tmed.png',
+                color: Colors.white,
+              ),
             ),
           ),
         ],

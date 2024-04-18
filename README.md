@@ -16,3 +16,5 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 adb shell am start -a android.intent.action.VIEW -d "https://vc.t-med.uz/" com.tmed.tmedvc
+
+rename setAppName --targets android --value "TMED VC" 
