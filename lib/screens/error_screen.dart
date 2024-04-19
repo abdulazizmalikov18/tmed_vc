@@ -7,7 +7,7 @@ class ErrorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Error Screen")),
+      appBar: AppBar(title: const Text("Mu'ammo")),
       body: Center(
         child: Column(
           children: [

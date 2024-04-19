@@ -11,6 +11,7 @@ import '../utils/toast.dart';
 // Join Screen
 class SpeakerJoinScreen extends StatefulWidget {
   final bool isCreateMeeting;
+
   const SpeakerJoinScreen({super.key, required this.isCreateMeeting});
 
   @override
@@ -29,6 +30,7 @@ class _SpeakerJoinScreenState extends State<SpeakerJoinScreen> {
 
   TextEditingController meetingIdTextController = TextEditingController();
   TextEditingController nameTextController = TextEditingController();
+
   @override
   void initState() {
     initCameraPreview();
@@ -60,7 +62,7 @@ class _SpeakerJoinScreenState extends State<SpeakerJoinScreen> {
       backgroundColor: primaryColor,
       appBar: AppBar(
         title: Text(
-          widget.isCreateMeeting ? "Create Meeting" : "Join as a speaker",
+          widget.isCreateMeeting ? "Meeting yaratilmoqda..." : "Kuzatuvchi sifatida qo'shilmoqda...",
           style: const TextStyle(fontSize: 20),
           textAlign: TextAlign.center,
         ),
@@ -68,8 +70,7 @@ class _SpeakerJoinScreenState extends State<SpeakerJoinScreen> {
       body: SafeArea(
           child: SingleChildScrollView(
         child: ConstrainedBox(
-          constraints:
-              BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -90,8 +91,7 @@ class _SpeakerJoinScreenState extends State<SpeakerJoinScreen> {
                           borderRadius: BorderRadius.circular(12),
                           child: RTCVideoView(
                             cameraRenderer as RTCVideoRenderer,
-                            objectFit: RTCVideoViewObjectFit
-                                .RTCVideoViewObjectFitCover,
+                            objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
                           ),
                         ),
                       ),
@@ -131,14 +131,11 @@ class _SpeakerJoinScreenState extends State<SpeakerJoinScreen> {
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: const CircleBorder(),
-                                backgroundColor:
-                                    isCameraOn ? Colors.white : red,
+                                backgroundColor: isCameraOn ? Colors.white : red,
                                 padding: const EdgeInsets.all(12),
                               ),
                               child: Icon(
-                                isCameraOn
-                                    ? Icons.videocam
-                                    : Icons.videocam_off,
+                                isCameraOn ? Icons.videocam : Icons.videocam_off,
                                 color: isCameraOn ? grey : Colors.white,
                               ),
                             ),
@@ -157,17 +154,14 @@ class _SpeakerJoinScreenState extends State<SpeakerJoinScreen> {
                   children: [
                     if (widget.isCreateMeeting)
                       Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: black750),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: black750),
                         padding: const EdgeInsets.all(16),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "Meeting code: ${meetingIdTextController.text}",
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 16),
+                              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                             ),
                             GestureDetector(
                               child: const Padding(
@@ -178,11 +172,8 @@ class _SpeakerJoinScreenState extends State<SpeakerJoinScreen> {
                                 ),
                               ),
                               onTap: () {
-                                Clipboard.setData(ClipboardData(
-                                    text: meetingIdTextController.text));
-                                showSnackBarMessage(
-                                    message: "Meeting ID has been copied.",
-                                    context: context);
+                                Clipboard.setData(ClipboardData(text: meetingIdTextController.text));
+                                showSnackBarMessage(message: "Meeting ID has been copied.", context: context);
                               },
                             ),
                           ],
@@ -191,8 +182,9 @@ class _SpeakerJoinScreenState extends State<SpeakerJoinScreen> {
                     if (widget.isCreateMeeting) const VerticalSpacer(16),
                     Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: black750),
+                        borderRadius: BorderRadius.circular(12),
+                        color: black750,
+                      ),
                       child: TextField(
                         textAlign: TextAlign.center,
                         style: const TextStyle(
@@ -200,19 +192,21 @@ class _SpeakerJoinScreenState extends State<SpeakerJoinScreen> {
                         ),
                         controller: nameTextController,
                         decoration: const InputDecoration(
-                            hintText: "Enter your name",
-                            hintStyle: TextStyle(
-                              color: textGray,
-                            ),
-                            border: InputBorder.none),
+                          hintText: "Ismingizni kiriting",
+                          hintStyle: TextStyle(
+                            color: textGray,
+                          ),
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
                     const VerticalSpacer(16),
                     if (!widget.isCreateMeeting)
                       Container(
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: black750),
+                          borderRadius: BorderRadius.circular(12),
+                          color: black750,
+                        ),
                         child: TextField(
                           textAlign: TextAlign.center,
                           style: const TextStyle(
@@ -220,25 +214,22 @@ class _SpeakerJoinScreenState extends State<SpeakerJoinScreen> {
                           ),
                           controller: meetingIdTextController,
                           decoration: const InputDecoration(
-                              hintText: "Enter meeting code",
-                              hintStyle: TextStyle(
-                                color: textGray,
-                              ),
-                              border: InputBorder.none),
+                            hintText: "Enter meeting code",
+                            hintStyle: TextStyle(
+                              color: textGray,
+                            ),
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
                     if (!widget.isCreateMeeting) const VerticalSpacer(16),
                     MaterialButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        color: purple,
-                        child: Text(
-                            widget.isCreateMeeting
-                                ? "Create Meeting"
-                                : "Join as a speaker",
-                            style: const TextStyle(fontSize: 16)),
-                        onPressed: () => {joinMeeting()}),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      color: purple,
+                      child: Text(widget.isCreateMeeting ? "Meeting yaratish" : "Konferensiyaga kirish", style: const TextStyle(fontSize: 16)),
+                      onPressed: () => {joinMeeting()},
+                    ),
                   ],
                 ),
               )
@@ -270,8 +261,7 @@ class _SpeakerJoinScreenState extends State<SpeakerJoinScreen> {
 
   Future<void> joinMeeting() async {
     if (meetingIdTextController.text.isEmpty) {
-      showSnackBarMessage(
-          message: "Please enter Valid Meeting ID", context: context);
+      showSnackBarMessage(message: "Please enter Valid Meeting ID", context: context);
       return;
     }
     if (nameTextController.text.isEmpty) {

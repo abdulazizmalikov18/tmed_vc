@@ -16,6 +16,7 @@ class ChatView extends StatefulWidget {
   final bool showClose;
   final Orientation orientation;
   final Function onClose;
+
   const ChatView({
     super.key,
     required this.meeting,
@@ -41,9 +42,7 @@ class _ChatViewState extends State<ChatView> {
     super.initState();
 
     // Subscribing 'CHAT' Topic
-    widget.meeting.pubSub
-        .subscribe("CHAT", messageHandler)
-        .then((value) => setState((() => messages = value)));
+    widget.meeting.pubSub.subscribe("CHAT", messageHandler).then((value) => setState((() => messages = value)));
   }
 
   @override
@@ -68,8 +67,7 @@ class _ChatViewState extends State<ChatView> {
                     padding: EdgeInsets.symmetric(horizontal: 10.0),
                     child: Text(
                       "Chat",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                     ),
                   ),
                 ),
@@ -101,8 +99,7 @@ class _ChatViewState extends State<ChatView> {
                                   (e) => ChatWidget(
                                     orientation: widget.orientation,
                                     message: e,
-                                    isLocalParticipant: e.senderId ==
-                                        widget.meeting.localParticipant.id,
+                                    isLocalParticipant: e.senderId == widget.meeting.localParticipant.id,
                                   ),
                                 )
                                 .toList(),
@@ -114,25 +111,17 @@ class _ChatViewState extends State<ChatView> {
                     Expanded(
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 10),
-                        padding: EdgeInsets.fromLTRB(
-                            widget.orientation == Orientation.portrait
-                                ? 16
-                                : 10,
-                            0,
-                            0,
-                            0),
+                        padding: EdgeInsets.fromLTRB(widget.orientation == Orientation.portrait ? 16 : 10, 0, 0, 0),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: black600),
+                          borderRadius: BorderRadius.circular(12),
+                          color: black600,
+                        ),
                         child: Row(
                           children: [
                             Expanded(
                               child: TextField(
                                 style: TextStyle(
-                                  fontSize:
-                                      widget.orientation == Orientation.portrait
-                                          ? 16
-                                          : 12,
+                                  fontSize: widget.orientation == Orientation.portrait ? 16 : 12,
                                   fontWeight: FontWeight.w500,
                                 ),
                                 controller: msgTextController,
@@ -140,11 +129,12 @@ class _ChatViewState extends State<ChatView> {
                                   msgTextController.text;
                                 }),
                                 decoration: const InputDecoration(
-                                    hintText: "Write your message",
-                                    border: InputBorder.none,
-                                    hintStyle: TextStyle(
-                                      color: black400,
-                                    )),
+                                  hintText: "Habaringizni yozing...",
+                                  border: InputBorder.none,
+                                  hintStyle: TextStyle(
+                                    color: black400,
+                                  ),
+                                ),
                               ),
                             ),
                             GestureDetector(
@@ -154,23 +144,19 @@ class _ChatViewState extends State<ChatView> {
                                       .publish(
                                         "CHAT",
                                         msgTextController.text,
-                                        const PubSubPublishOptions(
-                                            persist: true),
+                                        const PubSubPublishOptions(persist: true),
                                       )
-                                      .then(
-                                          (value) => msgTextController.clear()),
+                                      .then((value) => msgTextController.clear()),
                               child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  width: 45,
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 0),
-                                  decoration: BoxDecoration(
-                                      color:
-                                          msgTextController.text.trim().isEmpty
-                                              ? null
-                                              : purple,
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: const Icon(Icons.send)),
+                                padding: const EdgeInsets.all(8),
+                                width: 45,
+                                margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                                decoration: BoxDecoration(
+                                  color: msgTextController.text.trim().isEmpty ? null : purple,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Icon(Icons.send),
+                              ),
                             ),
                           ],
                         ),
@@ -183,8 +169,7 @@ class _ChatViewState extends State<ChatView> {
                         rippleColor: primaryColor,
                         onTap: () {
                           if (!isRaisedHand) {
-                            widget.meeting.pubSub
-                                .publish("RAISE_HAND", "message");
+                            widget.meeting.pubSub.publish("RAISE_HAND", "message");
                             setState(() {
                               isRaisedHand = true;
                             });
@@ -199,9 +184,7 @@ class _ChatViewState extends State<ChatView> {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: isRaisedHand
-                                ? const Color.fromRGBO(255, 255, 255, 1)
-                                : const Color.fromRGBO(0, 0, 0, 0.3),
+                            color: isRaisedHand ? const Color.fromRGBO(255, 255, 255, 1) : const Color.fromRGBO(0, 0, 0, 0.3),
                           ),
                           padding: const EdgeInsets.all(14),
                           child: SvgPicture.asset(

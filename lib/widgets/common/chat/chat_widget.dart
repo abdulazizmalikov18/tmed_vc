@@ -8,22 +8,17 @@ class ChatWidget extends StatelessWidget {
   final bool isLocalParticipant;
   final PubSubMessage message;
   final Orientation orientation;
-  const ChatWidget(
-      {super.key,
-      required this.isLocalParticipant,
-      required this.message,
-      required this.orientation});
+
+  const ChatWidget({super.key, required this.isLocalParticipant, required this.message, required this.orientation});
 
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment:
-          isLocalParticipant ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: isLocalParticipant ? Alignment.centerRight : Alignment.centerLeft,
       child: GestureDetector(
         onLongPress: () {
           Clipboard.setData(ClipboardData(text: message.message));
-          showSnackBarMessage(
-              message: "Message has been copied", context: context);
+          showSnackBarMessage(message: "Habar Bufferga nusxalandi", context: context);
         },
         child: Container(
           margin: const EdgeInsets.all(4),
@@ -37,7 +32,7 @@ class ChatWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  isLocalParticipant ? "You" : message.senderName,
+                  isLocalParticipant ? "Siz" : message.senderName,
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     color: black400,
@@ -51,9 +46,7 @@ class ChatWidget extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: orientation == Orientation.portrait ? 16 : 14,
-                    fontWeight: orientation == Orientation.portrait
-                        ? FontWeight.w500
-                        : FontWeight.w400,
+                    fontWeight: orientation == Orientation.portrait ? FontWeight.w500 : FontWeight.w400,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -63,9 +56,10 @@ class ChatWidget extends StatelessWidget {
                     "${message.timestamp.toLocal().hour}:${message.timestamp.toLocal().minute}",
                     textAlign: TextAlign.end,
                     style: TextStyle(
-                        color: black400,
-                        fontSize: orientation == Orientation.portrait ? 10 : 9,
-                        fontWeight: FontWeight.w500),
+                      color: black400,
+                      fontSize: orientation == Orientation.portrait ? 10 : 9,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ],

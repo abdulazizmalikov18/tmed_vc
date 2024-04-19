@@ -95,7 +95,7 @@ class _ParticipantGridTileState extends State<ParticipantGridTile> {
                 child: Row(
                   children: [
                     Text(widget.participant.isLocal
-                        ? "You"
+                        ? "Siz"
                         : widget.participant.displayName),
                     if (audioStream == null) const HorizontalSpacer(4),
                     if (audioStream == null)

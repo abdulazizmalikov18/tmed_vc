@@ -13,11 +13,14 @@ class WaitingToJoin extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             VerticalSpacer(20),
-            Text("Creating a Room",
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500)),
+            Text(
+              "Xona yaratilmoqda...",
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ],
         ),
       ),

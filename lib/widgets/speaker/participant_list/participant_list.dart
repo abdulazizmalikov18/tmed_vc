@@ -9,6 +9,7 @@ import 'package:tmed_vc/widgets/speaker/participant_list/participant_list_item.d
 
 class ParticipantList extends StatefulWidget {
   final Room meeting;
+
   const ParticipantList({super.key, required this.meeting});
 
   @override
@@ -21,8 +22,7 @@ class _ParticipantListState extends State<ParticipantList> {
 
   @override
   void initState() {
-    _participants.putIfAbsent(widget.meeting.localParticipant.id,
-        () => widget.meeting.localParticipant);
+    _participants.putIfAbsent(widget.meeting.localParticipant.id, () => widget.meeting.localParticipant);
     _participants.addAll(widget.meeting.participants);
     addMeetingListeners(widget.meeting);
     addRaiseHandListener(widget.meeting);
@@ -43,9 +43,11 @@ class _ParticipantListState extends State<ParticipantList> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                    "Participants (${widget.meeting.participants.length + 1})",
+                    "Qatnashuvchilar (${widget.meeting.participants.length + 1})",
                     style: const TextStyle(
-                        fontWeight: FontWeight.w700, fontSize: 18),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ),
@@ -67,21 +69,12 @@ class _ParticipantListState extends State<ParticipantList> {
                 itemCount: _participants.values.length,
                 itemBuilder: (context, index) => ParticipantListItem(
                   participant: _participants.values.elementAt(index),
-                  isRaisedHand: raisedHandParticipant
-                      .contains(_participants.values.elementAt(index).id),
+                  isRaisedHand: raisedHandParticipant.contains(_participants.values.elementAt(index).id),
                   onMoreOptionsSelected: (value) {
-                    if (value == "Remove from Co-host" ||
-                        value == "Add as a Co-host") {
+                    if (value == "Remove from Co-host" || value == "Add as a Co-host") {
                       log("Selected Change Mode ${_participants.values.elementAt(index).id}");
-                      widget.meeting.pubSub.publish(
-                          "CHANGE_MODE_${_participants.values.elementAt(index).id}",
-                          jsonEncode({
-                            "mode":
-                                _participants.values.elementAt(index).mode ==
-                                        Mode.CONFERENCE
-                                    ? Mode.VIEWER.name
-                                    : Mode.CONFERENCE.name
-                          }));
+                      widget.meeting.pubSub.publish("CHANGE_MODE_${_participants.values.elementAt(index).id}",
+                          jsonEncode({"mode": _participants.values.elementAt(index).mode == Mode.CONFERENCE ? Mode.VIEWER.name : Mode.CONFERENCE.name}));
                     } else if (value == "Remove Participant") {
                       log("Selected remove participnt");
 
@@ -109,8 +102,7 @@ class _ParticipantListState extends State<ParticipantList> {
     meeting.on(Events.participantModeChanged, (data) {
       if (mounted) {
         final newParticipants = _participants;
-        newParticipants[data['participantId']]?.mode =
-            meeting.participants[data['participantId']]!.mode;
+        newParticipants[data['participantId']]?.mode = meeting.participants[data['participantId']]!.mode;
         setState(() => _participants = newParticipants);
       }
     });

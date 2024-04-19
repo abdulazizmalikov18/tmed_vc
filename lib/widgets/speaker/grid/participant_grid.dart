@@ -6,8 +6,8 @@ import 'package:tmed_vc/widgets/speaker/grid/participant_grid_tile.dart';
 class ParticipantGrid extends StatefulWidget {
   final Room meeting;
   final Orientation orientation;
-  const ParticipantGrid(
-      {super.key, required this.meeting, required this.orientation});
+
+  const ParticipantGrid({super.key, required this.meeting, required this.orientation});
 
   @override
   State<ParticipantGrid> createState() => _ParticipantGridState();
@@ -48,13 +48,9 @@ class _ParticipantGridState extends State<ParticipantGrid> {
   @override
   Widget build(BuildContext context) {
     return Flex(
-      direction: widget.orientation == Orientation.portrait
-          ? Axis.vertical
-          : Axis.horizontal,
+      direction: widget.orientation == Orientation.portrait ? Axis.vertical : Axis.horizontal,
       children: [
-        for (int i = 0;
-            i < (onScreenParticipants.length / numberofColumns).ceil();
-            i++)
+        for (int i = 0; i < (onScreenParticipants.length / numberofColumns).ceil(); i++)
           Flexible(
               child: Flex(
             direction: widget.orientation == Orientation.portrait
@@ -67,39 +63,28 @@ class _ParticipantGridState extends State<ParticipantGrid> {
                   j <
                       onScreenParticipants.values
                           .toList()
-                          .sublist(
-                              i * numberofColumns,
-                              (i + 1) * numberofColumns >
-                                      onScreenParticipants.length
-                                  ? onScreenParticipants.length
-                                  : (i + 1) * numberofColumns)
+                          .sublist(i * numberofColumns, (i + 1) * numberofColumns > onScreenParticipants.length ? onScreenParticipants.length : (i + 1) * numberofColumns)
                           .length;
                   j++)
                 Flexible(
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: ParticipantGridTile(
-                        key: Key(onScreenParticipants.values
-                            .toList()
-                            .sublist(
-                                i * numberofColumns,
-                                (i + 1) * numberofColumns >
-                                        onScreenParticipants.length
-                                    ? onScreenParticipants.length
-                                    : (i + 1) * numberofColumns)
-                            .elementAt(j)
-                            .id),
-                        participant: onScreenParticipants.values
-                            .toList()
-                            .sublist(
-                                i * numberofColumns,
-                                (i + 1) * numberofColumns >
-                                        onScreenParticipants.length
-                                    ? onScreenParticipants.length
-                                    : (i + 1) * numberofColumns)
-                            .elementAt(j),
-                        activeSpeakerId: activeSpeakerId,
-                        quality: quality),
+                      key: Key(onScreenParticipants.values
+                          .toList()
+                          .sublist(i * numberofColumns, (i + 1) * numberofColumns > onScreenParticipants.length ? onScreenParticipants.length : (i + 1) * numberofColumns)
+                          .elementAt(j)
+                          .id),
+                      participant: onScreenParticipants.values
+                          .toList()
+                          .sublist(
+                            i * numberofColumns,
+                            (i + 1) * numberofColumns > onScreenParticipants.length ? onScreenParticipants.length : (i + 1) * numberofColumns,
+                          )
+                          .elementAt(j),
+                      activeSpeakerId: activeSpeakerId,
+                      quality: quality,
+                    ),
                   ),
                 )
             ],
@@ -151,8 +136,7 @@ class _ParticipantGridState extends State<ParticipantGrid> {
       (data) {
         Map<String, Participant> _participants = {};
         Participant _localParticipant = widget.meeting.localParticipant;
-        _participants.putIfAbsent(
-            _localParticipant.id, () => _localParticipant);
+        _participants.putIfAbsent(_localParticipant.id, () => _localParticipant);
         _participants.addAll(_meeting.participants);
         // log("List Mode Change mode:: ${_participants[data['participantId']]?.mode.name}");
 
@@ -192,29 +176,16 @@ class _ParticipantGridState extends State<ParticipantGrid> {
 
   updateOnScreenParticipants() {
     Map<String, Participant> newScreenParticipants = <String, Participant>{};
-    List<Participant> conferenceParticipants = participants.values
-        .where((element) => element.mode == Mode.CONFERENCE)
-        .toList();
+    List<Participant> conferenceParticipants = participants.values.where((element) => element.mode == Mode.CONFERENCE).toList();
 
-    conferenceParticipants
-        .sublist(
-            0,
-            conferenceParticipants.length > numberOfMaxOnScreenParticipants
-                ? numberOfMaxOnScreenParticipants
-                : conferenceParticipants.length)
-        .forEach((participant) {
+    conferenceParticipants.sublist(0, conferenceParticipants.length > numberOfMaxOnScreenParticipants ? numberOfMaxOnScreenParticipants : conferenceParticipants.length).forEach((participant) {
       newScreenParticipants.putIfAbsent(participant.id, () => participant);
     });
-    if (!newScreenParticipants.containsKey(activeSpeakerId) &&
-        activeSpeakerId != null) {
+    if (!newScreenParticipants.containsKey(activeSpeakerId) && activeSpeakerId != null) {
       newScreenParticipants.remove(newScreenParticipants.keys.last);
-      newScreenParticipants.putIfAbsent(
-          activeSpeakerId!,
-          () => participants.values
-              .firstWhere((element) => element.id == activeSpeakerId));
+      newScreenParticipants.putIfAbsent(activeSpeakerId!, () => participants.values.firstWhere((element) => element.id == activeSpeakerId));
     }
-    if (!listEquals(newScreenParticipants.keys.toList(),
-        onScreenParticipants.keys.toList())) {
+    if (!listEquals(newScreenParticipants.keys.toList(), onScreenParticipants.keys.toList())) {
       setState(() {
         onScreenParticipants = newScreenParticipants;
         quality = newScreenParticipants.length > 4
@@ -224,16 +195,9 @@ class _ParticipantGridState extends State<ParticipantGrid> {
                 : "high";
       });
     }
-    if (numberofColumns !=
-        (newScreenParticipants.length > 2 ||
-                numberOfMaxOnScreenParticipants == 2
-            ? 2
-            : 1)) {
+    if (numberofColumns != (newScreenParticipants.length > 2 || numberOfMaxOnScreenParticipants == 2 ? 2 : 1)) {
       setState(() {
-        numberofColumns = newScreenParticipants.length > 2 ||
-                numberOfMaxOnScreenParticipants == 2
-            ? 2
-            : 1;
+        numberofColumns = newScreenParticipants.length > 2 || numberOfMaxOnScreenParticipants == 2 ? 2 : 1;
       });
     }
   }

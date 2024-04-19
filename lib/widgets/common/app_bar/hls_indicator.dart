@@ -58,13 +58,13 @@ class _HLSIndicatorState extends State<HLSIndicator>
                 padding: const EdgeInsets.all(10),
                 child: Text(
                   widget.hlsState == "HLS_STOPPED"
-                      ? "Go Live"
+                      ? "Jonli efir"
                       : widget.hlsState == "HLS_STARTING"
-                          ? "Starting Live"
+                          ? "Jonli efir boshlanmoqda..."
                           : widget.hlsState == "HLS_STARTED" ||
                                   widget.hlsState == "HLS_PLAYABLE"
-                              ? "Stop Live"
-                              : "Stopping Live",
+                              ? "Jonli efirni to'xtatish"
+                              : "Jonli efir to'xtatilmoqda...",
                   style: const TextStyle(fontWeight: FontWeight.w500),
                 ),
               )
@@ -73,7 +73,7 @@ class _HLSIndicatorState extends State<HLSIndicator>
                     borderRadius: BorderRadius.all(Radius.circular(6)),
                     color: red),
                 padding: const EdgeInsets.all(8),
-                child: const Text("Live")));
+                child: const Text("Jonli Efir")));
   }
 
   @override

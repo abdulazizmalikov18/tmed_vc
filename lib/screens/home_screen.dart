@@ -21,8 +21,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   StreamSubscription? _sub;
 
   @override
@@ -97,18 +96,19 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                   const Spacer(),
                   MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     color: purple,
-                    child: const Text("Konferensiya yaratish",
-                        style: TextStyle(fontSize: 16)),
+                    child: const Text("Konferensiya yaratish", style: TextStyle(fontSize: 16)),
                     onPressed: () => {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SpeakerJoinScreen(
-                                  isCreateMeeting: true)))
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SpeakerJoinScreen(
+                            isCreateMeeting: true,
+                          ),
+                        ),
+                      ),
                     },
                   ),
                   const VerticalSpacer(32),
@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen>
                         color: black750,
                       )),
                       HorizontalSpacer(),
-                      Text("OR"),
+                      Text("YOKI"),
                       HorizontalSpacer(),
                       Expanded(
                           child: Divider(
@@ -146,13 +146,10 @@ class _HomeScreenState extends State<HomeScreen>
                   //         }),
                   // const VerticalSpacer(12),
                   MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     color: black750,
-                    child: const Text(
-                        "Jonli Konfrensiyaga qoshilish qo'shilish ",
-                        style: TextStyle(fontSize: 16)),
+                    child: const Text("Jonli Konfrensiyaga qoshilish qo'shilish ", style: TextStyle(fontSize: 16)),
                     onPressed: () => {
                       context.goNamed(
                         AppRoutePath.viewerJoinScreen,
@@ -177,8 +174,7 @@ List<String>? getCmds() {
 
   const plainPath = 'path/subpath';
   const args = 'path/portion/?uid=123&token=abc';
-  const emojiArgs =
-      '?arr%5b%5d=123&arr%5b%5d=abc&addr=1%20Nowhere%20Rd&addr=Rand%20City%F0%9F%98%82';
+  const emojiArgs = '?arr%5b%5d=123&arr%5b%5d=abc&addr=1%20Nowhere%20Rd&addr=Rand%20City%F0%9F%98%82';
 
   if (kIsWeb) {
     return [

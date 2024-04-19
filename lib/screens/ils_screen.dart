@@ -16,6 +16,7 @@ class ILSScreen extends StatefulWidget {
   final String meetingId, token, displayName;
   final bool micEnabled, camEnabled, chatEnabled;
   final Mode mode;
+
   const ILSScreen({
     super.key,
     required this.meetingId,
@@ -83,9 +84,7 @@ class _ILSScreenState extends State<ILSScreen> {
           ? SafeArea(
               child: Scaffold(
                 backgroundColor: Theme.of(context).primaryColor,
-                body: localParticipantMode == Mode.CONFERENCE
-                    ? SpeakerView(meeting: meeting, token: widget.token)
-                    : ViewerView(meeting: meeting),
+                body: localParticipantMode == Mode.CONFERENCE ? SpeakerView(meeting: meeting, token: widget.token) : ViewerView(meeting: meeting),
               ),
             )
           : const WaitingToJoin(),
@@ -125,66 +124,61 @@ class _ILSScreenState extends State<ILSScreen> {
     // Called when meeting is ended
     _meeting.on(Events.roomLeft, (String? errorMsg) {
       if (errorMsg != null) {
-        showSnackBarMessage(
-            message: "Meeting left due to $errorMsg !!", context: context);
+        showSnackBarMessage(message: "Meeting left due to $errorMsg !!", context: context);
       }
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-          (route) => false);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
     });
 
-    _meeting.on(
-        Events.error,
-        (error) => {
-              showSnackBarMessage(
-                  message: "${error['name']} :: ${error['message']}",
-                  context: context)
-            });
+    _meeting.on(Events.error, (error) => {showSnackBarMessage(message: "${error['name']} :: ${error['message']}", context: context)});
   }
 
   void registerModeListener(Room _meeting) async {
-    PubSubMessages messages = await _meeting.pubSub
-        .subscribe("CHANGE_MODE_${_meeting.localParticipant.id}",
-            (PubSubMessage pubSubMessage) {
+    PubSubMessages messages = await _meeting.pubSub.subscribe("CHANGE_MODE_${_meeting.localParticipant.id}", (PubSubMessage pubSubMessage) {
       Map<dynamic, dynamic> message = jsonDecode(pubSubMessage.message);
       if (mounted) {
         if (message['mode'] == Mode.CONFERENCE.name) {
           showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  content: Text(
-                      "${pubSubMessage.senderName} requested to join as a speaker"),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                  backgroundColor: black750,
-                  actionsAlignment: MainAxisAlignment.center,
-                  actions: [
-                    MaterialButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        color: black600,
-                        child: const Text("Decline",
-                            style: TextStyle(fontSize: 16)),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }),
-                    MaterialButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        color: purple,
-                        child: const Text("Accept",
-                            style: TextStyle(fontSize: 16)),
-                        onPressed: () {
-                          _meeting.changeMode(Mode.CONFERENCE);
-                          Navigator.pop(context);
-                        }),
-                  ],
-                );
-              });
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text("${pubSubMessage.senderName} ma'ruzachi sifatida ishtirok etishni so'radi"),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                backgroundColor: black750,
+                actionsAlignment: MainAxisAlignment.center,
+                actions: [
+                  MaterialButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    color: black600,
+                    child: const Text(
+                      "Rad etish",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  MaterialButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    color: purple,
+                    child: const Text(
+                      "Qabul qilish",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    onPressed: () {
+                      _meeting.changeMode(Mode.CONFERENCE);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
         } else {
           _meeting.changeMode(Mode.VIEWER);
         }
