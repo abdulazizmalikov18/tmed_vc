@@ -18,3 +18,5 @@ samples, guidance on mobile development, and a full API reference.
 adb shell am start -a android.intent.action.VIEW -d "https://vc.t-med.uz/" com.tmed.tmedvc
 
 rename setAppName --targets android --value "TMED VC" 
+
+flutter build appbundle --release --build-name=1.0.2 --build-number=2

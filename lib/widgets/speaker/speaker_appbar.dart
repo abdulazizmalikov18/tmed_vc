@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:videosdk/videosdk.dart';
 import 'package:tmed_vc/constants/colors.dart';
 import 'package:tmed_vc/utils/api.dart';
@@ -58,129 +59,157 @@ class SpeakerAppBarState extends State<SpeakerAppBar> {
   @override
   Widget build(BuildContext context) {
     return AnimatedCrossFade(
-        duration: const Duration(milliseconds: 300),
-        crossFadeState: !widget.isFullScreen
-            ? CrossFadeState.showFirst
-            : CrossFadeState.showSecond,
-        secondChild: const SizedBox.shrink(),
-        firstChild: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          widget.meeting.id,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
+      duration: const Duration(milliseconds: 300),
+      crossFadeState: !widget.isFullScreen
+          ? CrossFadeState.showFirst
+          : CrossFadeState.showSecond,
+      secondChild: const SizedBox.shrink(),
+      firstChild: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        widget.meeting.id,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      GestureDetector(
+                        child: const Padding(
+                          padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                          child: Icon(
+                            Icons.copy,
+                            size: 16,
                           ),
                         ),
-                        GestureDetector(
-                          child: const Padding(
-                            padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                            child: Icon(
-                              Icons.copy,
-                              size: 16,
+                        onTap: () {
+                          Clipboard.setData(
+                            ClipboardData(
+                              text:
+                                  "https://vc.t-med.uz/#/viewerJoinScreen?fid=${widget.meeting.id}",
                             ),
-                          ),
-                          onTap: () {
-                            Clipboard.setData(
-                                ClipboardData(text: widget.meeting.id));
-                            showSnackBarMessage(
-                                message: "Meeting ID has been copied.",
-                                context: context);
-                          },
-                        ),
-                      ],
+                          );
+                          showSnackBarMessage(
+                              message: "Meeting ID has been copied.",
+                              context: context);
+                        },
+                      ),
+                    ],
+                  ),
+                  // VerticalSpacer(),
+                  Text(
+                    elapsedTime == null
+                        ? "00:00:00"
+                        : elapsedTime.toString().split(".").first,
+                    style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: black400),
+                  )
+                ],
+              ),
+            ),
+            TouchRippleEffect(
+                rippleColor: primaryColor,
+                child: HLSIndicator(
+                  hlsState: hlsState,
+                  isButton: true,
+                ),
+                onTap: () {
+                  if (hlsState == "HLS_STOPPING") {
+                    showSnackBarMessage(
+                        message: "HLS is in stopping state", context: context);
+                  } else if (hlsState == "HLS_STARTED" ||
+                      hlsState == "HLS_PLAYABLE") {
+                    widget.meeting.stopHls();
+                  } else if (hlsState == "HLS_STARTING") {
+                    showSnackBarMessage(
+                        message: "HLS is in starting state", context: context);
+                  } else {
+                    Map<String, dynamic> config = {
+                      'layout': {
+                        "type": "SPOTLIGHT",
+                        "priority": "PIN",
+                        "gridSize": "4",
+                      },
+                      'theme': "DARK",
+                      'mode': "video-and-audio",
+                      'orientation': "landscape",
+                      'quality': "high",
+                    };
+                    widget.meeting.startHls(config: config);
+                  }
+                }),
+            const HorizontalSpacer(),
+            TouchRippleEffect(
+              borderRadius: BorderRadius.circular(12),
+              rippleColor: primaryColor,
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: false,
+                  builder: (context) =>
+                      ParticipantList(meeting: widget.meeting),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: secondaryColor),
+                  color: primaryColor,
+                ),
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/ic_participants.svg",
+                      width: 22,
+                      height: 22,
+                      color: Colors.white,
                     ),
-                    // VerticalSpacer(),
-                    Text(
-                      elapsedTime == null
-                          ? "00:00:00"
-                          : elapsedTime.toString().split(".").first,
-                      style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: black400),
-                    )
+                    const HorizontalSpacer(4),
+                    Text(_participants.length.toString()),
                   ],
                 ),
               ),
-              TouchRippleEffect(
-                  rippleColor: primaryColor,
-                  child: HLSIndicator(
-                    hlsState: hlsState,
-                    isButton: true,
-                  ),
-                  onTap: () {
-                    if (hlsState == "HLS_STOPPING") {
-                      showSnackBarMessage(
-                          message: "HLS is in stopping state",
-                          context: context);
-                    } else if (hlsState == "HLS_STARTED" ||
-                        hlsState == "HLS_PLAYABLE") {
-                      widget.meeting.stopHls();
-                    } else if (hlsState == "HLS_STARTING") {
-                      showSnackBarMessage(
-                          message: "HLS is in starting state",
-                          context: context);
-                    } else {
-                      Map<String, dynamic> config = {
-                        'layout': {
-                          "type": "SPOTLIGHT",
-                          "priority": "PIN",
-                          "gridSize": "4",
-                        },
-                        'theme': "DARK",
-                        'mode': "video-and-audio",
-                        'orientation': "landscape",
-                        'quality': "high",
-                      };
-                      widget.meeting.startHls(config: config);
-                    }
-                  }),
-              const HorizontalSpacer(),
-              TouchRippleEffect(
-                borderRadius: BorderRadius.circular(12),
-                rippleColor: primaryColor,
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: false,
-                    builder: (context) =>
-                        ParticipantList(meeting: widget.meeting),
-                  );
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: secondaryColor),
-                    color: primaryColor,
-                  ),
-                  padding: const EdgeInsets.all(8),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/ic_participants.svg",
-                        width: 22,
-                        height: 22,
-                        color: Colors.white,
-                      ),
-                      const HorizontalSpacer(4),
-                      Text(_participants.length.toString()),
-                    ],
-                  ),
+            ),
+            const HorizontalSpacer(),
+            TouchRippleEffect(
+              borderRadius: BorderRadius.circular(12),
+              rippleColor: primaryColor,
+              onTap: () {
+                Share.share(
+                  'check out my website https://vc.t-med.uz/#/viewerJoinScreen?fid=${widget.meeting.id}',
+                  subject: 'Look what I made!',
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: secondaryColor),
+                  color: primaryColor,
+                ),
+                padding: const EdgeInsets.all(8),
+                child: SvgPicture.asset(
+                  "assets/share.svg",
+                  width: 22,
+                  height: 22,
+                  color: Colors.white,
                 ),
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> startTimer() async {
