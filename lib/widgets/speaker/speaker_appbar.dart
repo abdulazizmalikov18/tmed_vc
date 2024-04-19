@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:videosdk/videosdk.dart';
 import 'package:tmed_vc/constants/colors.dart';
 import 'package:tmed_vc/utils/api.dart';
@@ -186,9 +185,11 @@ class SpeakerAppBarState extends State<SpeakerAppBar> {
               borderRadius: BorderRadius.circular(12),
               rippleColor: primaryColor,
               onTap: () {
-                Share.share(
-                  'check out my website https://vc.t-med.uz/#/viewerJoinScreen?fid=${widget.meeting.id}',
-                  subject: 'Look what I made!',
+                Clipboard.setData(
+                  ClipboardData(
+                    text:
+                        "https://vc.t-med.uz/#/viewerJoinScreen?fid=${widget.meeting.id}",
+                  ),
                 );
               },
               child: Container(
