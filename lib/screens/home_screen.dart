@@ -150,11 +150,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     color: black750,
                     child: const Text("Jonli Konfrensiyaga qoshilish qo'shilish ", style: TextStyle(fontSize: 16)),
-                    onPressed: () => {
+                    onPressed: () {
                       context.goNamed(
                         AppRoutePath.viewerJoinScreen,
                         queryParameters: {"fid": ""},
-                      ),
+                      );
                     },
                   ),
                   const Spacer(),

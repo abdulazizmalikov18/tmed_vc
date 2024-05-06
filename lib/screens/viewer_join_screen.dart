@@ -106,8 +106,8 @@ class _ViewerJoinScreenState extends State<ViewerJoinScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         color: purple,
                         child: const Text("Qo'shilish", style: TextStyle(fontSize: 16)),
-                        onPressed: () => {
-                          joinMeeting(),
+                        onPressed: () {
+                          joinMeeting();
                         },
                       ),
                     ],
@@ -133,28 +133,29 @@ class _ViewerJoinScreenState extends State<ViewerJoinScreen> {
     }
     String meetingId = meetingIdTextController.text;
     String name = nameTextController.text;
-    await validateMeeting(_token, meetingId).then((validMeeting) {
-      print("====>>>> $validMeeting");
-      if (context.mounted) {
-        if (validMeeting) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ILSScreen(
-                token: _token,
-                meetingId: meetingId,
-                displayName: name,
-                micEnabled: false,
-                camEnabled: false,
-                mode: Mode.VIEWER,
-              ),
+    if (context.mounted) {
+      if (true) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ILSScreen(
+              token: _token,
+              meetingId: meetingId,
+              displayName: name,
+              micEnabled: false,
+              camEnabled: false,
+              mode: Mode.VIEWER,
             ),
-          );
-        } else {
-          showSnackBarMessage(message: "Noto'g'ri Meeting ID", context: context);
-        }
+          ),
+        );
+      } else {
+        showSnackBarMessage(message: "Noto'g'ri Meeting ID", context: context);
       }
-    });
+    }
+
+    // validateMeeting(_token, meetingId).then((validMeeting) {
+    //   print("====>>>> $validMeeting");
+    // });
   }
 
   @override

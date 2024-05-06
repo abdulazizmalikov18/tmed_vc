@@ -264,12 +264,8 @@ class _SpeakerJoinScreenState extends State<SpeakerJoinScreen> {
       showSnackBarMessage(message: "Please enter Valid Meeting ID", context: context);
       return;
     }
-    if (nameTextController.text.isEmpty) {
-      showSnackBarMessage(message: "Please enter Name", context: context);
-      return;
-    }
     String meetingId = meetingIdTextController.text;
-    String name = nameTextController.text;
+    String name = nameTextController.text.isEmpty ? "Mehmon" : nameTextController.text;
     await validateMeeting(_token, meetingId).then((validMeeting) {
       print("====>>>> 2 $validMeeting");
       if (context.mounted) {
